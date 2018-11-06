@@ -9,7 +9,9 @@ import java.net.UnknownHostException;
 
 public class Client {
 
-	Socket socket;
+	private Socket socket;
+	
+	
 
 	public Client(int num) {
 		System.out.println("I'm the client number " + (num + 1));
