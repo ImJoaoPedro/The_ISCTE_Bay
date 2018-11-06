@@ -22,6 +22,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
+	
+	public static final int DEFAULT_PORT = 8080;
 
 	private int socketPort;
 
@@ -36,7 +38,7 @@ public class Server {
 		if (args != null) {
 			socketPort = Integer.parseInt(args[0]);
 		} else
-			socketPort = 8080;
+			socketPort = DEFAULT_PORT;
 	}
 
 	private void startServer() {
@@ -51,6 +53,7 @@ public class Server {
 			// Closes the connections
 			socket.close();
 			server.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
