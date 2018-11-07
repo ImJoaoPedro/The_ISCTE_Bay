@@ -35,12 +35,10 @@ public class Server {
 	private int socketPort;
 	private ServerSocket serversocket;
 	private Socket socket;
-	//private ArrayList<User> users = new ArrayList<>();
+	private ArrayList<User> users = new ArrayList<>();
 
-	public Server() {
-
-		socketPort = DEFAULT_PORT;
-		//checkArgs(args);
+	public Server(String[] args) {
+		checkArgs(args);
 		System.out.println("Starting Server at port " + socketPort);
 	}
 
@@ -62,9 +60,9 @@ public class Server {
 			while (true) {
 				socket = serversocket.accept();
 
-				//BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//				String msg = in.readLine();
-//				readMessage(msg);
+				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				String msg = in.readLine();
+				readMessage(msg);
 
 				new Connection(socket).start();
 
@@ -81,21 +79,24 @@ public class Server {
 		}
 	}
 
-//	private void readMessage(String message) {
-//
-//		if (message.startsWith(JOIN_PREFIX)) {
-//
-//			String user[] = message.split(" ");
-//			String name = user[1];
-//			String adress = user[2];
-//			int port = Integer.parseInt(user[3]);
-//
-//			users.add(new User(name, adress, port));
-//		} else if (message.startsWith(USER_PREFIX)) {
-//			// TODO
-//		}
-//
-//	}
+	
+	
+	private void readMessage(String message) {
+
+		if (message.startsWith(JOIN_PREFIX)) {
+
+			String user[] = message.split(" ");
+			String name = user[1];
+			String adress = user[2];
+			int port = Integer.parseInt(user[3]);
+
+			users.add(new User(name, adress, port));
+		} else if (message.startsWith(USER_PREFIX)) {
+			// TODO
+			System.out.println("CLT COMMAND TBD!");
+		}
+
+	}
 
 	// restos caso necessário
 
