@@ -28,20 +28,20 @@ import models.User;
 
 public class Server {
 
-	private static final int DEFAULT_PORT = 8080;
-	private static final String JOIN_PREFIX = "INSC";
-	private static final String USER_PREFIX = "CLT";
+	public static final int DEFAULT_PORT = 8080;
+	public static final String JOIN_PREFIX = "INSC";
+	public static final String USER_PREFIX = "CLT";
 
 	private int socketPort;
-	private ServerSocket server;
+	private ServerSocket serversocket;
 	private Socket socket;
-	private ArrayList<User> users;
+	//private ArrayList<User> users = new ArrayList<>();
 
-	public Server(String[] args) {
-		checkArgs(args);
-		users = new ArrayList<User>();
+	public Server() {
+
+		socketPort = DEFAULT_PORT;
+		//checkArgs(args);
 		System.out.println("Starting Server at port " + socketPort);
-		startServer();
 	}
 
 	private void checkArgs(String[] args) {
@@ -52,44 +52,50 @@ public class Server {
 			socketPort = DEFAULT_PORT;
 	}
 
-	private void startServer() {
+	public void startServer()  {
+
 		try {
 			// Starts accepting connections on the server
-			server = new ServerSocket(socketPort);
-
+			serversocket = new ServerSocket(socketPort);
+			System.out.println("");
 			// Test
 			while (true) {
-				socket = server.accept();
+				socket = serversocket.accept();
 
-				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				String msg = in.readLine();
+				//BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//				String msg = in.readLine();
+//				readMessage(msg);
 
-				readMessage(msg);
-
-				System.out.println(users.size());
+				new Connection(socket).start();
 
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				serversocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	private void readMessage(String message) {
-
-		if (message.startsWith(JOIN_PREFIX)) {
-
-			String user[] = message.split(" ");
-			String name = user[1];
-			String adress = user[2];
-			int port = Integer.parseInt(user[3]);
-
-			users.add(new User(name, adress, port));
-		} else if (message.startsWith(USER_PREFIX)) {
-			// TODO
-		}
-
-	}
+//	private void readMessage(String message) {
+//
+//		if (message.startsWith(JOIN_PREFIX)) {
+//
+//			String user[] = message.split(" ");
+//			String name = user[1];
+//			String adress = user[2];
+//			int port = Integer.parseInt(user[3]);
+//
+//			users.add(new User(name, adress, port));
+//		} else if (message.startsWith(USER_PREFIX)) {
+//			// TODO
+//		}
+//
+//	}
 
 	// restos caso necessário
 

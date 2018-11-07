@@ -24,4 +24,9 @@ public class User {
 		return port;
 	}
 	
+	@Override
+	public String toString() {
+		return "<" + name + ">" + "<" + address + ">" + "<" + port + ">";
+	}
+	
 }
