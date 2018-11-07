@@ -28,6 +28,10 @@ import models.User;
 
 public class Server {
 
+	private static final int DEFAULT_PORT = 8080;
+	private static final String JOIN_PREFIX = "INSC";
+	private static final String USER_PREFIX = "CLT";
+
 	private int socketPort;
 	private ServerSocket server;
 	private Socket socket;
@@ -45,7 +49,7 @@ public class Server {
 		if (args != null) {
 			socketPort = Integer.parseInt(args[0]);
 		} else
-			socketPort = 8080;
+			socketPort = DEFAULT_PORT;
 	}
 
 	private void startServer() {
@@ -60,12 +64,7 @@ public class Server {
 				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String msg = in.readLine();
 
-				if (msg.startsWith("INSC")) {
-					String temp[] = msg.split(" ");
-					users.add(new User(temp[1], temp[2], Integer.parseInt(temp[3])));
-				} else if(msg.startsWith("CLT")) {
-					//TO-DO
-				}
+				readMessage(msg);
 
 				System.out.println(users.size());
 
@@ -75,5 +74,30 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
+
+	private void readMessage(String message) {
+
+		if (message.startsWith(JOIN_PREFIX)) {
+
+			String user[] = message.split(" ");
+			String name = user[1];
+			String adress = user[2];
+			int port = Integer.parseInt(user[3]);
+
+			users.add(new User(name, adress, port));
+		} else if (message.startsWith(USER_PREFIX)) {
+			// TODO
+		}
+
+	}
+
+	// restos caso necessário
+
+//	if (msg.startsWith("INSC")) {
+//		String temp[] = msg.split(" ");
+//		users.add(new User(temp[1], temp[2], Integer.parseInt(temp[3])));
+//	} else if (msg.startsWith("CLT")) {
+//		//TODO
+//	}
 
 }
