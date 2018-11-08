@@ -23,8 +23,8 @@ public class GUI {
 	private final int TOP_PANEL_GRID_COLUMNS = 3;
 
 	// Bottom right panel - Download and JProgressBar
-	private static final int RIGHT_PANEL_GRID_ROWS = 2;
-	private static final int RIGHT_PANEL_GRID_COLUMNS = 0;
+	private final int RIGHT_PANEL_GRID_ROWS = 2;
+	private final int RIGHT_PANEL_GRID_COLUMNS = 0;
 
 	private JFrame frame;
 	private JTextField textfield;
@@ -35,9 +35,24 @@ public class GUI {
 
 	public GUI(Client client) {
 		this.client = client;
+
+		loadGUI();
+	}
+
+	// TODO JList<Object?>, ProgressBar thin, Search Action
+
+	private void loadGUI() {
+		loadFrame();
+		loadPanels();
+
+		frame.pack();
+	}
+
+	private void loadFrame() {
+
 		frame = new JFrame("The ISCTE Bay");
-		
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
 		WindowListener exitListener = new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -49,20 +64,10 @@ public class GUI {
 				}
 			}
 		};
+
 		frame.addWindowListener(exitListener);
 		frame.setLayout(new BorderLayout());
 
-		loadGUI();
-
-		frame.pack();
-	}
-
-	// TODO JList<Object?>, ProgressBar thin, Search Action
-
-	private void loadGUI() {
-		loadTopPanel();
-		loadLeftPanel();
-		loadRightPanel();
 	}
 
 	private void loadTopPanel() {
@@ -70,6 +75,19 @@ public class GUI {
 		JPanel panel = new JPanel(new GridLayout(TOP_PANEL_GRID_ROWS, TOP_PANEL_GRID_COLUMNS));
 		JLabel label = new JLabel("Texto a procurar:");
 		textfield = new JTextField();
+
+		loadSearchButton();
+		
+		panel.add(label);
+		panel.add(textfield);
+		panel.add(searchbutton);
+
+		frame.add(panel, BorderLayout.NORTH);
+
+	}
+	
+	private void loadSearchButton() {
+		
 		searchbutton = new JButton("Procurar");
 		
 		searchbutton.addActionListener(new ActionListener() {
@@ -78,13 +96,6 @@ public class GUI {
 				client.sendConsultSignal();
 			}
 		});
-
-		panel.add(label);
-		panel.add(textfield);
-		panel.add(searchbutton);
-
-		frame.add(panel, BorderLayout.NORTH);
-
 	}
 
 	private void loadLeftPanel() {
@@ -98,12 +109,31 @@ public class GUI {
 	private void loadRightPanel() {
 		JPanel panel = new JPanel(new GridLayout(RIGHT_PANEL_GRID_ROWS, RIGHT_PANEL_GRID_COLUMNS));
 		JProgressBar progressbar = new JProgressBar();
-		downloadbutton = new JButton("Descarregar");
-
+		
+		loadDownloadButton();
+		
 		panel.add(downloadbutton);
 		panel.add(progressbar);
 
 		frame.add(panel, BorderLayout.EAST);
+	}
+	
+	private void loadDownloadButton() {
+		
+		downloadbutton = new JButton("Descarregar");
+		
+		downloadbutton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//
+			}
+		});
+	}
+	
+	private void loadPanels() {
+		loadTopPanel();
+		loadLeftPanel();
+		loadRightPanel();
 	}
 
 	public void start() {
