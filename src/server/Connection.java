@@ -75,6 +75,7 @@ public class Connection extends Thread {
 		for (User user : users) {
 			out.println("CLT " + user.getAddress() + " " + user.getPort());
 		}
+		out.println("END");
 	}
 
 	private synchronized void exitUser() {
