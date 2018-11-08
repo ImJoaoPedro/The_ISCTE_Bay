@@ -19,8 +19,8 @@ import javax.swing.WindowConstants;
 public class GUI {
 
 	// Top Panel - Text, Field, Search
-	private static final int TOP_PANEL_GRID_ROWS = 0;
-	private static final int TOP_PANEL_GRID_COLUMNS = 3;
+	private final int TOP_PANEL_GRID_ROWS = 0;
+	private final int TOP_PANEL_GRID_COLUMNS = 3;
 
 	// Bottom right panel - Download and JProgressBar
 	private static final int RIGHT_PANEL_GRID_ROWS = 2;

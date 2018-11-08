@@ -64,21 +64,32 @@ public class Connection extends Thread {
 	private void addUser(String s) {
 		String tmp[] = s.split(" ");
 		user = new User(tmp[1], Integer.parseInt(tmp[2]), socket);
-		users.add(user);
-		out.println("Successfully Joined!");
-		System.out.println("A new user has connected!");
+		synchronized (users) {
+			users.add(user);
+			out.println("Successfully Joined!");
+			System.out.println("A new user has connected!");
+		}
 	}
 
-	private void consultUsers() {
+	private synchronized void consultUsers() {
 		for (User user : users) {
 			out.println("CLT " + user.getAddress() + " " + user.getPort());
 		}
 	}
 
-	private void exitUser() {
+	private synchronized void exitUser() {
+		closeSocket();
 		users.remove(user);
 		System.out.println("A user has disconnected!");
 		hasLeft = true;
+	}
+	
+	private void closeSocket() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			System.out.println("Error closing socket!");
+		}
 	}
 
 }
