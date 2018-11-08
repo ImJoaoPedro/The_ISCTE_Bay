@@ -8,7 +8,7 @@ public class User {
 	private String address;
 	private int port;
 	private Socket socket;
-	
+
 	public User(String name, String address, int port, Socket socket) {
 		this.name = name;
 		this.address = address;
@@ -27,9 +27,14 @@ public class User {
 	public int getPort() {
 		return port;
 	}
-	
+
 	public Socket getSocket() {
 		return socket;
 	}
+
 	
+//	public String toString() {
+//		return getAddress() + " " + getPort();
+//	}
+
 }

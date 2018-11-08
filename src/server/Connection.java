@@ -17,14 +17,16 @@ public class Connection extends Thread {
 	 * Criar boolean para prevenir users nao inscritos pedirem o CLT
 	 */
 
-	private final String JOIN_PREFIX = "INSC";
-	private final String CONSULT_PREFIX = "CLT";
+	private static final String JOIN_PREFIX = "INSC";
+	private static final String CONSULT_PREFIX = "CLT";
 
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
-	private ArrayList<User> users;
+	
 	private User user;
+	private ArrayList<User> users;
+
 
 	public Connection(Socket socket, ArrayList<User> users) {
 		super();
@@ -69,6 +71,7 @@ public class Connection extends Thread {
 		} else if (temp.startsWith(CONSULT_PREFIX)) {
 			for (User user : users) {
 				out.println("CLT " + user.getAddress() + " " + user.getPort());
+				//out.println ("CLT " + user);
 			}
 		}
 	}

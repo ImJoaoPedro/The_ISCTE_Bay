@@ -28,7 +28,8 @@ public class Server {
 	public static final int DEFAULT_PORT = 8080;
 	public static final String JOIN_PREFIX = "INSC";
 	public static final String USER_PREFIX = "CLT";
-	private int socketPort = DEFAULT_PORT;;
+	
+	private int socketPort = DEFAULT_PORT;
 	private ServerSocket serversocket;
 	private Socket socket;
 	private ArrayList<User> users = new ArrayList<>();

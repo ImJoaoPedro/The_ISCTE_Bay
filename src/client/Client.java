@@ -55,7 +55,7 @@ public class Client {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
 			out.println("INSC " + (currentnumber) + " " + BASE_IP + " " + socket.getLocalPort());
-			out.println("CLT");
+			//out.println("CLT");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

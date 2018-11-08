@@ -87,5 +87,7 @@ public class GUI {
 	public JButton getDownloadButton() {
 		return downloadbutton;
 	}
+	
+	//get textfield
 
 }
