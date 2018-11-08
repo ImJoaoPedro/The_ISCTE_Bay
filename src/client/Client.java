@@ -1,15 +1,14 @@
 package client;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
 import server.Server;
 
 public class Client {
@@ -27,47 +26,51 @@ public class Client {
 		this.num = num;
 	}
 
-	public int getClientNum() {
-		return num;
+	public void launchClient() {
+		makeGui();
+		joinServer();
 	}
 
-	public void launchClient() {
-		try {
-			joinServer();
-		} finally {
-			System.out.println("Closing");
-			try {
-				socket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+	private void makeGui() {
+		GUI gui = new GUI();
+		gui.getSearchButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				out.println("CLT");
 			}
-		}
-
+		});
 	}
 
 	private void joinServer() {
 
-		int currentnumber = getClientNum() + 1;
-
+		// GET CURRENT NUMBER FROM SERVER BEFORE "INSC"
+		int currentnumber = num + 1;
 		System.out.println("I'm the client number " + (currentnumber));
 
 		try {
 			// create socket
 			socket = new Socket(BASE_IP, Server.DEFAULT_PORT);
 
-			// recieves
+			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-			// sends
-			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-
-			out.println("INSC" + (currentnumber) + BASE_IP + socket.getLocalPort());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			out.println("INSC " + (currentnumber) + " " + BASE_IP + " " + socket.getLocalPort());
+			out.println("CLT");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(socket);
+
+		while (true) {
+			try {
+				String msg = in.readLine();
+				if (msg != null) {
+					System.out.println(msg);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 

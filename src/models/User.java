@@ -1,15 +1,19 @@
 package models;
 
+import java.net.Socket;
+
 public class User {
 
 	private String name;
 	private String address;
 	private int port;
+	private Socket socket;
 	
-	public User(String name, String address, int port) {
+	public User(String name, String address, int port, Socket socket) {
 		this.name = name;
 		this.address = address;
 		this.port = port;
+		this.socket = socket;
 	}
 
 	public String getName() {
@@ -24,9 +28,8 @@ public class User {
 		return port;
 	}
 	
-	@Override
-	public String toString() {
-		return "<" + name + ">" + "<" + address + ">" + "<" + port + ">";
+	public Socket getSocket() {
+		return socket;
 	}
 	
 }

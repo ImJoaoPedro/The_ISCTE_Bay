@@ -2,9 +2,6 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,19 +30,17 @@ public class GUI {
 
 		frame = new JFrame("The ISCTE Bay");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
 		frame.setLayout(new BorderLayout());
 
 		loadGUI();
 
 		frame.pack();
-
+		frame.setVisible(true);
 	}
 	
 	//TODO JList<Object?>, ProgressBar thin, Search Action
 
 	private void loadGUI() {
-
 		loadTopPanel();
 		loadLeftPanel();
 		loadRightPanel();
@@ -54,17 +49,14 @@ public class GUI {
 	private void loadTopPanel() {
 
 		JPanel panel = new JPanel(new GridLayout(TOP_PANEL_GRID_ROWS, TOP_PANEL_GRID_COLUMNS));
-
 		JLabel label = new JLabel("Texto a procurar:");
-
 		textfield = new JTextField();
-
-		loadSearchButton();
-
+		searchbutton = new JButton("Procurar");
+		
 		panel.add(label);
 		panel.add(textfield);
 		panel.add(searchbutton);
-
+		
 		frame.add(panel, BorderLayout.NORTH);
 
 	}
@@ -79,43 +71,13 @@ public class GUI {
 
 	private void loadRightPanel() {
 		JPanel panel = new JPanel(new GridLayout(RIGHT_PANEL_GRID_ROWS, RIGHT_PANEL_GRID_COLUMNS));
-
-		loadDownloadButton();
-
-		panel.add(downloadbutton);
-
 		JProgressBar progressbar = new JProgressBar();
-		// Progressbar too thin
-
+		downloadbutton = new JButton("Descarregar");	
+		
+		panel.add(downloadbutton);
 		panel.add(progressbar);
 
 		frame.add(panel, BorderLayout.EAST);
-	}
-
-	private void loadSearchButton() {
-
-		searchbutton = new JButton("Procurar");
-
-		searchbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Procurar");
-				// textfield.getText()
-				// listar users/CLT ??
-			}
-		});
-
-	}
-
-	private void loadDownloadButton() {
-
-		downloadbutton = new JButton("Descarregar");
-
-		downloadbutton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Descarregar");
-			}
-		});
-
 	}
 
 	public JButton getSearchButton() {
@@ -124,15 +86,6 @@ public class GUI {
 
 	public JButton getDownloadButton() {
 		return downloadbutton;
-	}
-
-	private void open() {
-		frame.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		GUI window = new GUI();
-		window.open();
 	}
 
 }
