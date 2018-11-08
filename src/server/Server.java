@@ -25,11 +25,7 @@ import models.User;
 
 public class Server {
 
-	public static final int DEFAULT_PORT = 8080;
-	public static final String JOIN_PREFIX = "INSC";
-	public static final String USER_PREFIX = "CLT";
-	
-	private int socketPort = DEFAULT_PORT;
+	public static int socketPort = 8080;
 	private ServerSocket serversocket;
 	private Socket socket;
 	private ArrayList<User> users = new ArrayList<>();
@@ -37,9 +33,10 @@ public class Server {
 	public Server(String[] args) {
 		checkArgs(args);
 		System.out.println("Starting Server at port " + socketPort);
+		startServer();
 	}
 
-	public void startServer() {
+	private void startServer() {
 		try {
 			// Starts accepting connections on the server
 			serversocket = new ServerSocket(socketPort);

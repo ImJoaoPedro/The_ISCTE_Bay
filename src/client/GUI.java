@@ -2,16 +2,22 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 public class GUI {
- 
+
 	// Top Panel - Text, Field, Search
 	private static final int TOP_PANEL_GRID_ROWS = 0;
 	private static final int TOP_PANEL_GRID_COLUMNS = 3;
@@ -25,20 +31,33 @@ public class GUI {
 	// jlist
 	private JButton searchbutton;
 	private JButton downloadbutton;
+	private Client client;
 
-	public GUI() {
-
+	public GUI(Client client) {
+		this.client = client;
 		frame = new JFrame("The ISCTE Bay");
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		WindowListener exitListener = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int confirm = JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?",
+						"Exit Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (confirm == 0) {
+					client.sendExitSignal();
+					System.exit(0);
+				}
+			}
+		};
+		frame.addWindowListener(exitListener);
 		frame.setLayout(new BorderLayout());
 
 		loadGUI();
 
 		frame.pack();
-		frame.setVisible(true);
 	}
-	
-	//TODO JList<Object?>, ProgressBar thin, Search Action
+
+	// TODO JList<Object?>, ProgressBar thin, Search Action
 
 	private void loadGUI() {
 		loadTopPanel();
@@ -53,10 +72,17 @@ public class GUI {
 		textfield = new JTextField();
 		searchbutton = new JButton("Procurar");
 		
+		searchbutton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				client.sendConsultSignal();
+			}
+		});
+
 		panel.add(label);
 		panel.add(textfield);
 		panel.add(searchbutton);
-		
+
 		frame.add(panel, BorderLayout.NORTH);
 
 	}
@@ -72,22 +98,16 @@ public class GUI {
 	private void loadRightPanel() {
 		JPanel panel = new JPanel(new GridLayout(RIGHT_PANEL_GRID_ROWS, RIGHT_PANEL_GRID_COLUMNS));
 		JProgressBar progressbar = new JProgressBar();
-		downloadbutton = new JButton("Descarregar");	
-		
+		downloadbutton = new JButton("Descarregar");
+
 		panel.add(downloadbutton);
 		panel.add(progressbar);
 
 		frame.add(panel, BorderLayout.EAST);
 	}
 
-	public JButton getSearchButton() {
-		return searchbutton;
+	public void start() {
+		frame.setVisible(true);
 	}
-
-	public JButton getDownloadButton() {
-		return downloadbutton;
-	}
-	
-	//get textfield
 
 }

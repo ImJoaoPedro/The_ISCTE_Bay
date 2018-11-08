@@ -13,20 +13,12 @@ import models.User;
 
 public class Connection extends Thread {
 
-	/*
-	 * Criar boolean para prevenir users nao inscritos pedirem o CLT
-	 */
-
-	private static final String JOIN_PREFIX = "INSC";
-	private static final String CONSULT_PREFIX = "CLT";
-
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
-	
-	private User user;
 	private ArrayList<User> users;
-
+	private User user;
+	private boolean hasLeft;
 
 	public Connection(Socket socket, ArrayList<User> users) {
 		super();
@@ -39,7 +31,9 @@ public class Connection extends Thread {
 			connect();
 			serve();
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (!hasLeft) {
+				exitUser();
+			}
 		}
 	}
 
@@ -52,28 +46,39 @@ public class Connection extends Thread {
 		while (!socket.isClosed()) {
 			readMessage();
 		}
-		users.remove(user);
 	}
 
 	private void readMessage() throws IOException {
-		String temp = in.readLine();
-		if (temp == null) {
-			// throw io exception
-		} else if (temp.startsWith(JOIN_PREFIX)) {
-			String tmp[] = temp.split(" ");
-			String name = tmp[1];
-			String adress = tmp[2];
-			int port = Integer.parseInt(tmp[3]);
-			user = new User(name, adress, port, socket);
-			users.add(user);
-			out.println("Successfully Joined!");
-			System.out.println("A new user has connected!");
-		} else if (temp.startsWith(CONSULT_PREFIX)) {
-			for (User user : users) {
-				out.println("CLT " + user.getAddress() + " " + user.getPort());
-				//out.println ("CLT " + user);
-			}
+		String input = in.readLine();
+		if (input == null) {
+			throw new IOException();
+		} else if (input.startsWith("INSC")) {
+			addUser(input);
+		} else if (input.startsWith("CLT")) {
+			consultUsers();
+		} else if (input.startsWith("EXIT")) {
+			exitUser();
 		}
+	}
+
+	private void addUser(String s) {
+		String tmp[] = s.split(" ");
+		user = new User(tmp[1], Integer.parseInt(tmp[2]), socket);
+		users.add(user);
+		out.println("Successfully Joined!");
+		System.out.println("A new user has connected!");
+	}
+
+	private void consultUsers() {
+		for (User user : users) {
+			out.println("CLT " + user.getAddress() + " " + user.getPort());
+		}
+	}
+
+	private void exitUser() {
+		users.remove(user);
+		System.out.println("A user has disconnected!");
+		hasLeft = true;
 	}
 
 }
