@@ -44,40 +44,69 @@ public class GUI {
 	private void loadGUI() {
 		loadFrame();
 		loadPanels();
-
 		frame.pack();
+	}
+
+	private void loadPanels() {
+		loadTopPanel();
+		loadLeftPanel();
+		loadRightPanel();
 	}
 
 	private void loadFrame() {
 
 		frame = new JFrame("The ISCTE Bay");
+
+		loadFrameClosing();
+
+		frame.setLayout(new BorderLayout());
+
+	}
+
+	// Closing Window PopUp
+	private void loadFrameClosing() {
+
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		WindowListener exitListener = new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				int confirm = JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?",
-						"Exit Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-				if (confirm == 0) {
-					client.sendExitSignal();
-					System.exit(0);
-				}
+				sendExitSignal();
 			}
 		};
 
 		frame.addWindowListener(exitListener);
-		frame.setLayout(new BorderLayout());
 
 	}
 
+	private int closingDialog() {
+
+		String closingquestion = "Are you sure you want to Close Application?";
+		String exit = "Exit Confirmation";
+
+		return JOptionPane.showOptionDialog(null, closingquestion, exit, JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, null, null);
+	}
+
+	private void sendExitSignal() {
+
+		if (closingDialog() == 0) {
+			client.sendExitSignal();
+			System.exit(0);
+		}
+
+	}
+
+	//TopPanel - search
 	private void loadTopPanel() {
 
 		JPanel panel = new JPanel(new GridLayout(TOP_PANEL_GRID_ROWS, TOP_PANEL_GRID_COLUMNS));
 		JLabel label = new JLabel("Texto a procurar:");
+		
 		textfield = new JTextField();
 
 		loadSearchButton();
-		
+
 		panel.add(label);
 		panel.add(textfield);
 		panel.add(searchbutton);
@@ -85,11 +114,11 @@ public class GUI {
 		frame.add(panel, BorderLayout.NORTH);
 
 	}
-	
+
 	private void loadSearchButton() {
-		
+
 		searchbutton = new JButton("Procurar");
-		
+
 		searchbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,6 +127,7 @@ public class GUI {
 		});
 	}
 
+	//LeftPanel - JList
 	private void loadLeftPanel() {
 		JPanel panel = new JPanel();
 
@@ -106,35 +136,34 @@ public class GUI {
 		frame.add(panel, BorderLayout.WEST);
 	}
 
+	//RightPanel - Download Action and Progressbar
 	private void loadRightPanel() {
 		JPanel panel = new JPanel(new GridLayout(RIGHT_PANEL_GRID_ROWS, RIGHT_PANEL_GRID_COLUMNS));
 		JProgressBar progressbar = new JProgressBar();
-		
+		// TODO progressbar probably will need to be a field and will need a load for
+		// itself
+
 		loadDownloadButton();
-		
+
 		panel.add(downloadbutton);
 		panel.add(progressbar);
 
 		frame.add(panel, BorderLayout.EAST);
 	}
-	
+
 	private void loadDownloadButton() {
-		
+
 		downloadbutton = new JButton("Descarregar");
-		
+
 		downloadbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//
+				// TODO Actiontoadd
 			}
 		});
 	}
-	
-	private void loadPanels() {
-		loadTopPanel();
-		loadLeftPanel();
-		loadRightPanel();
-	}
+
+	// TODO Textfield may need action
 
 	public void start() {
 		frame.setVisible(true);
