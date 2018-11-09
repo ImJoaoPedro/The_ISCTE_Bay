@@ -29,6 +29,10 @@ public class GUI {
 	// Bottom right panel - Download and JProgressBar
 	private final int RIGHT_PANEL_GRID_ROWS = 2;
 	private final int RIGHT_PANEL_GRID_COLUMNS = 0;
+	
+	//Frame position
+	private final int WINDOW_X = 250;
+	private final int WINDOW_Y = 200;
 
 	private JFrame frame;
 	private JTextField textfield;
@@ -69,6 +73,8 @@ public class GUI {
 		loadFrameClosing();
 
 		frame.setLayout(new BorderLayout());
+		
+		frame.setLocation(WINDOW_X, WINDOW_Y);
 
 	}
 
