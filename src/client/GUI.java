@@ -78,6 +78,15 @@ public class GUI {
 		frame.addWindowListener(exitListener);
 
 	}
+	
+	private void sendExitSignal() {
+
+		if (closingDialog() == 0) {
+			client.sendExitSignal();
+			System.exit(0);
+		}
+
+	}
 
 	private int closingDialog() {
 
@@ -88,14 +97,6 @@ public class GUI {
 				JOptionPane.QUESTION_MESSAGE, null, null, null);
 	}
 
-	private void sendExitSignal() {
-
-		if (closingDialog() == 0) {
-			client.sendExitSignal();
-			System.exit(0);
-		}
-
-	}
 
 	//TopPanel - search
 	private void loadTopPanel() {
