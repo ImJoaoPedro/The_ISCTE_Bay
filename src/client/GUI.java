@@ -7,9 +7,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -32,7 +36,12 @@ public class GUI {
 
 	private JFrame frame;
 	private JTextField textfield;
-	// jlist
+
+	// LIST
+	private DefaultListModel<File> files = new DefaultListModel<File>();
+	private JList<File> fileList = new JList<File>(files);
+
+	// Buttons
 	private JButton searchbutton;
 	private JButton downloadbutton;
 	private Client client;
@@ -84,7 +93,7 @@ public class GUI {
 		frame.addWindowListener(exitListener);
 
 	}
-	
+
 	private void sendExitSignal() {
 
 		if (closingDialog() == 0) {
@@ -103,13 +112,12 @@ public class GUI {
 				JOptionPane.QUESTION_MESSAGE, null, null, null);
 	}
 
-
-	//TopPanel - search
+	// TopPanel - search
 	private void loadTopPanel() {
 
 		JPanel panel = new JPanel(new GridLayout(TOP_PANEL_GRID_ROWS, TOP_PANEL_GRID_COLUMNS));
 		JLabel label = new JLabel("Texto a procurar:");
-		
+
 		textfield = new JTextField();
 
 		loadSearchButton();
@@ -130,25 +138,34 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				client.sendConsultSignal();
+				// TODO Textfield search action
+				// textfield.getText()
 			}
 		});
 	}
 
-	//LeftPanel - JList
+	// LeftPanel - JList
 	private void loadLeftPanel() {
 		JPanel panel = new JPanel();
 
-		// add JList
+		// loadList();
+
+		// panel.add(fileList);
 
 		frame.add(panel, BorderLayout.WEST);
 	}
 
-	//RightPanel - Download Action and Progressbar
+	private void loadList() {
+
+		// TODO listener
+
+	}
+
+	// RightPanel - Download Action and Progressbar
 	private void loadRightPanel() {
 		JPanel panel = new JPanel(new GridLayout(RIGHT_PANEL_GRID_ROWS, RIGHT_PANEL_GRID_COLUMNS));
 		JProgressBar progressbar = new JProgressBar();
-		// TODO progressbar probably will need to be a field and will need a load for
-		// itself
+		// TODO progressbar load
 
 		loadDownloadButton();
 
@@ -169,8 +186,6 @@ public class GUI {
 			}
 		});
 	}
-
-	// TODO Textfield may need action
 
 	public void start() {
 		frame.setVisible(true);
