@@ -29,10 +29,11 @@ public class Server {
 	private ServerSocket serversocket;
 	private Socket socket;
 	private ArrayList<User> users = new ArrayList<>();
+	private ServerUI gui;
 
 	public Server(String[] args) {
 		checkArgs(args);
-		System.out.println("Starting Server at port " + socketPort);
+		startUI();
 		startServer();
 	}
 
@@ -42,7 +43,7 @@ public class Server {
 			serversocket = new ServerSocket(socketPort);
 			while (true) {
 				socket = serversocket.accept();
-				new Connection(socket, users).start();
+				new Connection(socket, users, gui).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -53,6 +54,12 @@ public class Server {
 		// check if args are not null, else defaults to 8080
 		if (args != null)
 			socketPort = Integer.parseInt(args[0]);
+	}
+
+	private void startUI() {
+		gui = new ServerUI(this);
+		gui.start();
+		gui.addToText("Starting Server at port " + socketPort);
 	}
 
 }

@@ -19,11 +19,13 @@ public class Connection extends Thread {
 	private ArrayList<User> users;
 	private User user;
 	private boolean hasLeft;
+	private ServerUI gui;
 
-	public Connection(Socket socket, ArrayList<User> users) {
+	public Connection(Socket socket, ArrayList<User> users, ServerUI gui) {
 		super();
 		this.socket = socket;
 		this.users = users;
+		this.gui = gui;
 	}
 
 	public void run() {
@@ -67,7 +69,7 @@ public class Connection extends Thread {
 		synchronized (users) {
 			users.add(user);
 			out.println("Successfully Joined!");
-			System.out.println("A new user has connected!");
+			gui.addToText("A new user has connected!");
 		}
 	}
 
@@ -81,15 +83,15 @@ public class Connection extends Thread {
 	private synchronized void exitUser() {
 		closeSocket();
 		users.remove(user);
-		System.out.println("A user has disconnected!");
+		gui.addToText("A user has disconnected!");
 		hasLeft = true;
 	}
-	
+
 	private void closeSocket() {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			System.out.println("Error closing socket!");
+			gui.addToText("Error closing socket!");
 		}
 	}
 

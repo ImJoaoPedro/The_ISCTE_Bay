@@ -8,7 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,7 +19,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-public class GUI {
+public class ClientUI {
 
 	// Top Panel - Text, Field, Search
 	private final int TOP_PANEL_GRID_ROWS = 0;
@@ -46,7 +45,7 @@ public class GUI {
 	private JButton downloadbutton;
 	private Client client;
 
-	public GUI(Client client) {
+	public ClientUI(Client client) {
 		this.client = client;
 
 		loadGUI();

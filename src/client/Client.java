@@ -15,7 +15,7 @@ public class Client {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
-	private GUI gui;
+	private ClientUI clientUI;
 
 	public Client() {
 		launchClient();
@@ -27,8 +27,8 @@ public class Client {
 	}
 
 	private void makeGui() {
-		gui = new GUI(this);
-		gui.start();
+		clientUI = new ClientUI(this);
+		clientUI.start();
 	}
 
 	private void joinServer() {
