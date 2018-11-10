@@ -42,11 +42,17 @@ public class Client {
 			while (true) {
 				String msg = in.readLine();
 				if (msg != null) {
-					System.out.println(msg);
+					parseMessage(msg);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void parseMessage(String msg) {
+		if (msg.startsWith("CLT")) {
+			clientUI.getListModel().add(0, msg);
 		}
 	}
 
