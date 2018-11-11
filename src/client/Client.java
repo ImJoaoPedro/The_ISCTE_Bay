@@ -52,7 +52,11 @@ public class Client {
 
 	private void parseMessage(String msg) {
 		if (msg.startsWith("CLT")) {
-			clientUI.getListModel().add(0, msg);
+			clientUI.getListModel().addElement(msg);
+		} else if (msg.startsWith("FOUND")) {
+			clientUI.getListModel().addElement(msg.replaceAll("FOUND ", ""));
+		} else if (msg.startsWith("MSG")) {
+			clientUI.getListModel().addElement(msg.replaceAll("MSG", ""));
 		}
 	}
 
@@ -76,6 +80,10 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void sendSearchSignal() {
+		out.println("SRC " + clientUI.getText());
 	}
 
 }

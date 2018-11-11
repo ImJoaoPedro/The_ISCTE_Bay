@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -108,8 +107,11 @@ public class ClientUI {
 		searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				model.clear();
 				if (text.getText().equals("")) {
 					client.sendConsultSignal();
+				} else {
+					client.sendSearchSignal();
 				}
 			}
 		});
@@ -149,6 +151,10 @@ public class ClientUI {
 
 	DefaultListModel<String> getListModel() {
 		return model;
+	}
+
+	String getText() {
+		return text.getText();
 	}
 
 }

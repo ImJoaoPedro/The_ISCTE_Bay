@@ -2,6 +2,7 @@ package server;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -60,15 +61,29 @@ public class Connection extends Thread {
 			consultUsers();
 		} else if (input.startsWith("EXIT")) {
 			exitUser();
+		} else if (input.startsWith("SRC")) {
+			searchForFile(input);
+		}
+	}
+
+	private synchronized void searchForFile(String s) {
+		String[] tmp = s.split(" ");
+		String word = tmp[1];
+		for (User user : users) {
+			for (File file : user.getFiles()) {
+				if (file.getName().contains(word)) {
+					out.println("FOUND " + file.getName() + ", " + file.length() + " bytes");
+				}
+			}
 		}
 	}
 
 	private void addUser(String s) {
-		String tmp[] = s.split(" ");
+		String[] tmp = s.split(" ");
 		user = new User(tmp[1], Integer.parseInt(tmp[2]), socket);
 		synchronized (users) {
 			users.add(user);
-			out.println("Successfully Joined!");
+			out.println("MSG Successfully Joined!");
 			gui.addToText("A new user has connected!");
 		}
 	}
